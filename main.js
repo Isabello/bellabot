@@ -5,52 +5,55 @@ var roleSpawner = require('role.spawner');
 var roleConstructor = require('role.constructor');
 var roleCarrier = require('role.carrier');
 var roleStationaryHarvester = require('role.stationaryHarvester');
+var cleaner = require('cleaner');
 
 var _ = require('lodash');
 
-module.exports.loop = function () {
-    
-    /* Spawns new creeps */ 
-    
-    for(var name in Game.spawns) {
-        var spawn = Game.spawns[name];  
-       roleSpawner.run(spawn);
-       roleConstructor.run(spawn);
+module.exports.loop = function() {
+
+
+    cleaner.tick();
+    /* Spawns new creeps */
+
+    for (var name in Game.spawns) {
+        var spawn = Game.spawns[name];
+        roleSpawner.run(spawn);
+        roleConstructor.run(spawn);
     }
 
     var tower = Game.getObjectById('TOWER_ID');
-    if(tower) {
+    if (tower) {
         var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => structure.hits < structure.hitsMax
         });
-        if(closestDamagedStructure) {
+        if (closestDamagedStructure) {
             tower.repair(closestDamagedStructure);
         }
 
         var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        if(closestHostile) {
+        if (closestHostile) {
             tower.attack(closestHostile);
         }
     }
 
-    for(var name in Game.creeps) {
+    for (var name in Game.creeps) {
         var creep = Game.creeps[name];
-        if(creep.memory.role == 'harvester') {
+        if (creep.memory.role == 'harvester') {
             roleHarvester.run(creep);
         }
-        if(creep.memory.role == 'upgrader') {
+        if (creep.memory.role == 'upgrader') {
             roleUpgrader.run(creep);
         }
-        if(creep.memory.role == 'builder') {
+        if (creep.memory.role == 'builder') {
             roleBuilder.run(creep);
         }
-        if(creep.memory.role == 'carrier') {
+        if (creep.memory.role == 'carrier') {
             roleCarrier.run(creep);
         }
-        if(creep.memory.role == 'stationary') {
+        if (creep.memory.role == 'stationary') {
             roleStationaryHarvester.run(creep);
         }
-        
+
     }
 
 }
