@@ -4,7 +4,7 @@ var areaInit = {
     /*Lets mark all the free spaces around sources! Runs on init */
     run: function(spawn) {
 
-        if (spawn.memory.free_spaces_marked == undefined || spawn.memory.free_spaces_marked == false) {
+        if (spawn.memory.marked == undefined) {
 
             var sources = spawn.room.find(FIND_SOURCES);
 
@@ -28,7 +28,8 @@ var areaInit = {
                     }
                 }
             }
-            spawn.memory.free_spaces_marked = true; // All done!
+            spawn.memory.marked = true; // All done!
+            spawn.memory.flags = false;
         }
     }
 };

@@ -7,6 +7,7 @@ var roleCarrier = {
             creep.memory.transit = false;
         }
 
+/*
         if ((creep.memory.partner == '' || creep.memory.partner == null) &&
             (_(Game.creeps).filter({
                 memory: {
@@ -19,6 +20,7 @@ var roleCarrier = {
                 }
             }).value();
         }
+        */
 
         if (creep.memory.transit && creep.carry.energy == 0) {
             creep.memory.transit = false;
@@ -29,6 +31,9 @@ var roleCarrier = {
             creep.memory.transit = true;
             creep.say('Returning!');
         }
+
+        var transferPartner = _.filter(Game.creeps, {memory: { working : false} });
+        console.log(transferPartner);
 
         if (creep.memory.transit) {
             var targets = creep.room.find(FIND_STRUCTURES, {
@@ -42,7 +47,7 @@ var roleCarrier = {
                 creep.moveTo(targets[0]);
             }
         } else {
-            creep.moveTo(Game.getObjectById(creep.memory.partner[0].id));
+            creep.moveTo(transferPartner[0]);
         }
     }
 };

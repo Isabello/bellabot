@@ -10,20 +10,22 @@ var areaInit = require('method.areaInit');
 var initFlags = require('method.initFlags');
 var _ = require('lodash');
 
-Memory.flags = {};
-
 module.exports.loop = function() {
 
     cleaner.tick();
     /* Spawns new creeps */
     for (var name in Game.spawns) {
         var spawn = Game.spawns[name];
-        if (spawn.memory.free_spaces_marked == true ) {
-          //areaInit.initFlags();
+        if (spawn.memory.marked == true) {
+            if (spawn.memory.flags == false) {
+                initFlags.run(spawn);
+            }
+        }
+        if (spawn.memory.init == undefined) {
+            areaInit.run(spawn);
         }
         roleSpawner.run(spawn);
         roleConstructor.run(spawn);
-        areaInit.run(spawn);
     }
 
     var tower = Game.getObjectById('TOWER_ID');
@@ -59,7 +61,7 @@ module.exports.loop = function() {
             roleStationaryHarvester.run(creep);
         }
         //var flags = creep.room.find(FIND_FLAGS)
-      //  console.log(JSON.stringify(flags));
+        //  console.log(JSON.stringify(flags));
 
     }
 
