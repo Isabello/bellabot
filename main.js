@@ -7,17 +7,20 @@ var roleCarrier = require('role.carrier');
 var roleStationaryHarvester = require('role.stationaryHarvester');
 var cleaner = require('cleaner');
 var areaInit = require('method.areaInit');
-
+var initFlags = require('method.initFlags');
 var _ = require('lodash');
+
+Memory.flags = {};
 
 module.exports.loop = function() {
 
-
     cleaner.tick();
     /* Spawns new creeps */
-
     for (var name in Game.spawns) {
         var spawn = Game.spawns[name];
+        if (spawn.memory.free_spaces_marked == true ) {
+          //areaInit.initFlags();
+        }
         roleSpawner.run(spawn);
         roleConstructor.run(spawn);
         areaInit.run(spawn);
@@ -55,6 +58,8 @@ module.exports.loop = function() {
         if (creep.memory.role == 'stationary') {
             roleStationaryHarvester.run(creep);
         }
+        //var flags = creep.room.find(FIND_FLAGS)
+      //  console.log(JSON.stringify(flags));
 
     }
 

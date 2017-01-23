@@ -14,7 +14,7 @@ var roleConstructor = {
             spawn.memory.extensionCount = 0;
         }
 
-
+/*
         if (spawn.memory.road_status == undefined) {
             var sources = spawn.room.find(FIND_SOURCES);
             for (var n in sources) {
@@ -32,7 +32,7 @@ var roleConstructor = {
             }
             spawn.memory.road_status = 'complete';
         }
-
+*/
 
         if (spawn.room.controller.level == 2 && spawn.memory.extensionCount < 5) {
 

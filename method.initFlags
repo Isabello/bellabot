@@ -1,0 +1,12 @@
+var initFlags = {
+
+    run: function() {
+
+        var flags = creep.pos.find(FIND_FLAGS);
+        for (var i in flags) {
+            Memory.flags[flags[i]].occupied = false;
+        }
+    }
+};
+
+module.exports = initFlags;

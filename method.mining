@@ -1,0 +1,16 @@
+var mining = {
+
+    /** @param {Creep} creep **/
+    run: function(creep) {
+
+      var flags = creep.pos.find(FIND_FLAGS, {
+        filter: function(flag){
+          return: ( flag.memory.occupied == false)
+        }
+      })
+      console.log(flags);
+
+    }
+};
+
+module.exports = mining;

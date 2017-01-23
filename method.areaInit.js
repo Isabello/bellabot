@@ -17,11 +17,14 @@ var areaInit = {
 
                 // DEBUG: console.log(JSON.stringify(source_free));
                 /* Performs the actual marking for each source */
+                var counter = 0;
+                var flag_name;
                 for (var n in source_free) {
                     // DEBUG:console.log(source_free[i].terrain);
                     if (source_free[n].terrain == ('plain' || 'swamp')) {
-                        var flag =
-                            Game.rooms.sim.createFlag(source_free[n].x, source_free[n].y, i + '_' + n, COLOR_BLUE);
+                        flag_name = 'Mining_Space_' + i + '_' + counter;
+                        var flag = Game.rooms.sim.createFlag(source_free[n].x, source_free[n].y, flag_name, COLOR_BLUE);
+                        counter++;
                     }
                 }
             }
