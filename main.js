@@ -6,6 +6,7 @@ var roleConstructor = require('role.constructor');
 var roleCarrier = require('role.carrier');
 var roleStationaryHarvester = require('role.stationaryHarvester');
 var cleaner = require('cleaner');
+var areaInit = require('method.areaInit');
 
 var _ = require('lodash');
 
@@ -19,6 +20,7 @@ module.exports.loop = function() {
         var spawn = Game.spawns[name];
         roleSpawner.run(spawn);
         roleConstructor.run(spawn);
+        areaInit.run(spawn);
     }
 
     var tower = Game.getObjectById('TOWER_ID');

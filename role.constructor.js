@@ -14,18 +14,21 @@ var roleConstructor = {
             spawn.memory.extensionCount = 0;
         }
 
-        if (spawn.memory.road_status == undefined ){
-            var sources = spawn.room.find(FIND_SOURCES);
-            for (var n in sources ) {
-            var path_food = spawn.room.findPath(spawn.pos, sources[n].pos , {ignoreCreeps: true});
-            var counter =0;
-                for(var i in path_food) {
-                        var pos = new RoomPosition(path_food[i].x, path_food[i].y, spawn.room.name);
-                         pos.createConstructionSite(STRUCTURE_ROAD);
-                         counter++;
 
+        if (spawn.memory.road_status == undefined) {
+            var sources = spawn.room.find(FIND_SOURCES);
+            for (var n in sources) {
+                var path_food = spawn.room.findPath(spawn.pos, sources[n].pos, {
+                    ignoreCreeps: true
+                });
+                for (var i in path_food) {
+                    if ((path_food[i].x == sources[n].pos.x) && (path_food[i].y == sources[n].pos.y)) {
+                        break;
+                    } else {
+                        Game.rooms.sim.createFlag(path_food[i].x, path_food[i].y, 'road_' + n + '_' + i, COLOR_GREY);
+                        //   pos.createConstructionSite(STRUCTURE_ROAD);
+                    }
                 }
-                console.log('path length:'+path_food.length+' total tiles:',counter,' source #:'+n);
             }
             spawn.memory.road_status = 'complete';
         }

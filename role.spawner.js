@@ -23,12 +23,13 @@ var roleSpawner = {
             if ( Game.rooms[name].energyAvailable >= 200 && _.size(_.filter(Game.creeps, {memory: { role : 'harvester'} })) < spawn.memory.MAX_HARVESTERS ) {
                 var newName = spawn.createCreep([WORK,CARRY,MOVE], undefined, {role: 'harvester'});
                 console.log('Spawning new harvester: ' + newName);
-            } else if ( Game.rooms[name].energyAvailable >= 200 && _.size(_.filter(Game.creeps, {memory: { role : 'stationary'} })) < spawn.memory.MAX_STATIONARY ) {
+            /*} else if ( Game.rooms[name].energyAvailable >= 200 && _.size(_.filter(Game.creeps, {memory: { role : 'stationary'} })) < spawn.memory.MAX_STATIONARY ) {
                 var newName = spawn.createCreep([WORK,CARRY,MOVE], undefined, {role: 'stationary'});
                 console.log('Spawning new stationary: ' + newName);
             } else if ( Game.rooms[name].energyAvailable >= 200 && _.size(_.filter(Game.creeps, {memory: { role : 'carrier'} })) < spawn.memory.MAX_CARRIER ) {
                 var newName = spawn.createCreep([CARRY,MOVE,MOVE], undefined, {role: 'carrier'});
                 console.log('Spawning new Carrier: ' + newName);
+                */
             } else if ( Game.rooms[name].energyAvailable >= 200 && _.size(_.filter(Game.creeps, {memory: { role : 'upgrader'} })) <  spawn.memory.MAX_UPGRADERS ) {
                 var newName = spawn.createCreep([WORK,CARRY,MOVE], undefined, {role: 'upgrader'});
                 console.log('Spawning new upgrader: ' + newName);
