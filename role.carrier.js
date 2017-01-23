@@ -7,33 +7,34 @@ var roleCarrier = {
             creep.memory.transit = false;
         }
 
-/*
-        if ((creep.memory.partner == '' || creep.memory.partner == null) &&
-            (_(Game.creeps).filter({
-                memory: {
-                    role: 'stationary'
+        /*
+                if ((creep.memory.partner == '' || creep.memory.partner == null) &&
+                    (_(Game.creeps).filter({
+                        memory: {
+                            role: 'stationary'
+                        }
+                    }) != undefined) || !Game.creeps[creep.memory.partner[0]]) {
+                    creep.memory.partner = _(Game.creeps).filter({
+                        memory: {
+                            role: 'stationary'
+                        }
+                    }).value();
                 }
-            }) != undefined) || !Game.creeps[creep.memory.partner[0]]) {
-            creep.memory.partner = _(Game.creeps).filter({
-                memory: {
-                    role: 'stationary'
-                }
-            }).value();
-        }
-        */
+                */
 
         if (creep.memory.transit && creep.carry.energy == 0) {
             creep.memory.transit = false;
             creep.say('Acquiring!');
         }
 
+
         if (!creep.memory.transit && creep.carry.energy == creep.carryCapacity) {
             creep.memory.transit = true;
+            creep.memory.partner = false;
             creep.say('Returning!');
         }
 
-        var transferPartner = _.filter(Game.creeps, {memory: { working : false} });
-        console.log(transferPartner);
+
 
         if (creep.memory.transit) {
             var targets = creep.room.find(FIND_STRUCTURES, {
@@ -47,7 +48,23 @@ var roleCarrier = {
                 creep.moveTo(targets[0]);
             }
         } else {
-            creep.moveTo(transferPartner[0]);
+            if (!creep.memory.partner) {
+                var transferPartner = _.filter(Game.creeps, {
+                    memory: {
+                        working: false
+                    }
+                });
+                console.log(transferPartner);
+                try {
+                                  creep.memory.partner = transferPartner[_.random(0, transferPartner.length)].id;
+                } catch (e) {
+                  console.log('no id avails');
+                }
+
+            }
+            if (creep.memory.partner) {
+                creep.moveTo(Game.getObjectById(creep.memory.partner));
+            }
         }
     }
 };

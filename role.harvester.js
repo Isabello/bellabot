@@ -36,12 +36,13 @@ var roleHarvester = {
                     transit: false
                 }
             })
+            var trans = transferPartner[_.random(0, transferPartner.length)];
             try {
-                          creep.say(transferPartner[0].name);
+                          creep.say(trans.name);
             } catch (e) {
 
             };
-            creep.transfer(transferPartner[0], RESOURCE_ENERGY);
+            creep.transfer(trans, RESOURCE_ENERGY);
         }
 
 

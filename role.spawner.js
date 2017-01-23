@@ -7,18 +7,17 @@ var roleSpawner = {
 
         if (spawn.memory.init == undefined) {
             spawn.memory.MAX = {
-                MAX_HARVESTERS: 2,
+                MAX_HARVESTERS: 3,
                 MAX_UPGRADERS: 1,
                 MAX_BUILDERS: 1,
-                MAX_STATIONARY: 1,
-                MAX_CARRIER: 2
+                MAX_CARRIER: 4
             }
             spawn.memory.init = true;
         }
 
         for (var name in Game.rooms) {
             console.log('Room "' + name + '" has ' + Game.rooms[name].energyAvailable + ' energy');
-            if (Game.rooms[name].energyAvailable >= 150) {
+            if (Game.rooms[name].energyAvailable >= 200) {
                 if (_.size(_.filter(Game.creeps, {
                         memory: {
                             role: 'harvester'
@@ -27,10 +26,6 @@ var roleSpawner = {
                     var newName = spawn.createCreep([WORK, CARRY, MOVE], undefined, {
                         role: 'harvester'
                     });
-                    /*} else if ( _.size(_.filter(Game.creeps, {memory: { role : 'stationary'} })) < spawn.memory.MAX_STATIONARY ) {
-                        var newName = spawn.createCreep([WORK,CARRY,MOVE], undefined, {role: 'stationary'});
-
-                        */
                 } else if (_.size(_.filter(Game.creeps, {
                         memory: {
                             role: 'carrier'
@@ -55,6 +50,10 @@ var roleSpawner = {
                     var newName = spawn.createCreep([WORK, CARRY, MOVE], undefined, {
                         role: 'builder'
                     });
+                } else {
+                  var newName = spawn.createCreep([WORK, CARRY, MOVE], undefined, {
+                      role: 'harvester'
+                  });
                 }
             }
         }

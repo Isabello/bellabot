@@ -3,6 +3,7 @@ var roleConstructor = {
     /** @param {}  **/
     run: function(spawn) {
 
+/*
         if (spawn.memory.container_1 == undefined) {
             var sources = spawn.pos.findClosestByPath(FIND_SOURCES);
             var pos = new RoomPosition(sources.pos.x, sources.pos.y + 1, spawn.room.name);
@@ -13,7 +14,7 @@ var roleConstructor = {
         if (spawn.memory.extensionCount == undefined) {
             spawn.memory.extensionCount = 0;
         }
-
+*/
 /*
         if (spawn.memory.road_status == undefined) {
             var sources = spawn.room.find(FIND_SOURCES);
