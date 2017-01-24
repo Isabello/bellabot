@@ -10,11 +10,12 @@ var roleConstructor = {
             pos.createConstructionSite(STRUCTURE_CONTAINER);
             spawn.memory.container_1 = 'complete';
         }
-
+*/
         if (spawn.memory.extensionCount == undefined) {
             spawn.memory.extensionCount = 0;
         }
-*/
+
+
 /*
         if (spawn.memory.road_status == undefined) {
             var sources = spawn.room.find(FIND_SOURCES);

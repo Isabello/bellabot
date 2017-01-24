@@ -2,6 +2,10 @@
 
 basic bot in progress for playing screeps
 
+## Wheres it running?
+
+https://screeps.com/a/#!/room/E58N82
+
 ## current features:
 
 ```

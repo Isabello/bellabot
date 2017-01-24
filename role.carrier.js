@@ -63,7 +63,7 @@ var roleCarrier = {
 
             }
             if (creep.memory.partner) {
-                creep.moveTo(Game.getObjectById(creep.memory.partner));
+                creep.moveTo(Game.getObjectById(creep.memory.partner), {reusePath: 10});
             }
         }
     }

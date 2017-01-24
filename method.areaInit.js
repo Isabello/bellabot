@@ -23,7 +23,7 @@ var areaInit = {
                     // DEBUG:console.log(source_free[i].terrain);
                     if (source_free[n].terrain == ('plain' || 'swamp')) {
                         flag_name = 'Mining_Space_' + i + '_' + counter;
-                        var flag = Game.rooms.sim.createFlag(source_free[n].x, source_free[n].y, flag_name, COLOR_BLUE);
+                        var flag = Game.rooms.E58N82.createFlag(source_free[n].x, source_free[n].y, flag_name, COLOR_BLUE);
                         counter++;
                     }
                 }

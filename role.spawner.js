@@ -50,11 +50,7 @@ var roleSpawner = {
                     var newName = spawn.createCreep([WORK, CARRY, MOVE], undefined, {
                         role: 'builder'
                     });
-                } else {
-                  var newName = spawn.createCreep([WORK, CARRY, MOVE], undefined, {
-                      role: 'harvester'
-                  });
-                }
+                } 
             }
         }
     }
