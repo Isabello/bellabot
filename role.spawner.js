@@ -51,13 +51,13 @@ var roleSpawner = {
                         role: 'builder'
                     });
                 } 
-            } else { 
+            } else if (Game.rooms[name].energyAvailable >= 350 && spawn.room.controller.level == 2) {
                 if (_.size(_.filter(Game.creeps, {
                         memory: {
                             role: 'harvester'
                         }
                     })) < spawn.memory.MAX.MAX_HARVESTERS) {
-                    var newName = spawn.createCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], undefined, {
+                    var newName = spawn.createCreep([WORK, WORK, WORK, CARRY, MOVE], undefined, {
                         role: 'harvester'
                     });
                 } else if (_.size(_.filter(Game.creeps, {
@@ -81,7 +81,7 @@ var roleSpawner = {
                             role: 'builder'
                         }
                     })) < spawn.memory.MAX.MAX_BUILDERS) {
-                    var newName = spawn.createCreep([WORK, CARRY, CARRY, CARRY, CARRY, MOVE], undefined, {
+                    var newName = spawn.createCreep([WORK, CARRY, MOVE], undefined, {
                         role: 'builder'
                     });
                 } 

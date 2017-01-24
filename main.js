@@ -10,7 +10,7 @@ var initFlags = require('method.initFlags');
 var _ = require('lodash');
 
 module.exports.loop = function() {
-console.log( Game.rooms.sim.energyAvailable);
+
     cleaner.tick();
     /* Spawns new creeps */
     for (var name in Game.spawns) {
@@ -58,7 +58,9 @@ console.log( Game.rooms.sim.energyAvailable);
         if (creep.memory.role == 'carrier') {
             roleCarrier.run(creep);
         }
-
+            
+    
     }
-
+    /*
+    for (var name in Game.creeps) {          var creep = Game.creeps[name];  creep.memory.partner = false;    }*/
 }

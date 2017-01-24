@@ -22,6 +22,8 @@ var roleCarrier = {
             creep.memory.partner = false;
             console.log('Yuuut');
         }
+
+        
         if (!creep.memory.transit && creep.carry.energy == creep.carryCapacity) {
             creep.memory.transit = true;
             creep.memory.partner = false;
@@ -39,33 +41,13 @@ var roleCarrier = {
             if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(targets[0]);
             } else {
-               creep.memory.partner = false;
                creep.memory.transit = false;
+               creep.memory.partner = false;
             }
         } else {
-            /*
-            
-                var transferPartner = _.filter(Game.creeps, {
-                    memory: {
-                        working: false,
-                        partner: creep.id
-                    }
-                });            
-            if (!creep.memory.partner) {
-                try {
-                    creep.memory.partner = transferPartner[0].id;
-                } catch (e) {
-                  console.log('no id avails');
-                }
-            } else if (transferPartner[0] == undefined) {
-                creep.memory.partner = false;
-            }
-            */
             if (creep.memory.partner) {
                 creep.moveTo(Game.getObjectById(creep.memory.partner), {reusePath: 10});
             }
-
-
         }
     }
 };

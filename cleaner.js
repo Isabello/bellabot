@@ -6,19 +6,17 @@ module.exports = {
 
         for (var name in Memory.creeps) {
 
-            // Required to free up previously used flags! Smart!!
+          // Required to free up previously used flags! Smart!!
             if (!Game.creeps[name]) {
                 try {
-                    Memory.flags[Memory.creeps[name].assignment.name] = {
-                        'occupied': false
-                    };
-                    Memory.creeps[Game.getObjectById(Memory.creeps[name].partner)].partner;
-                } catch (e) {
-                    console.log('clean up failed ' + e);
+                    Memory.flags[Memory.creeps[name].assignment.name] = {'occupied': false};
                 }
-
+                 catch (e){
+                    console.log('clean up failed '+ e);
+                }
+                
                 delete Memory.creeps[name];
-
+                    
             }
         }
         /* for manual flag clean up
@@ -26,6 +24,6 @@ module.exports = {
              delete Memory.flags[name];
             }
 */
-    }
+}
 
 };
