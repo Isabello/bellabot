@@ -4,7 +4,6 @@ var roleBuilder = require('role.builder');
 var roleSpawner = require('role.spawner');
 var roleConstructor = require('role.constructor');
 var roleCarrier = require('role.carrier');
-var roleStationaryHarvester = require('role.stationaryHarvester');
 var cleaner = require('cleaner');
 var areaInit = require('method.areaInit');
 var initFlags = require('method.initFlags');
@@ -28,6 +27,7 @@ module.exports.loop = function() {
         roleConstructor.run(spawn);
     }
 
+/*
     var tower = Game.getObjectById('TOWER_ID');
     if (tower) {
         var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -42,6 +42,7 @@ module.exports.loop = function() {
             tower.attack(closestHostile);
         }
     }
+*/
 
     for (var name in Game.creeps) {
         var creep = Game.creeps[name];
@@ -57,11 +58,6 @@ module.exports.loop = function() {
         if (creep.memory.role == 'carrier') {
             roleCarrier.run(creep);
         }
-        if (creep.memory.role == 'stationary') {
-            roleStationaryHarvester.run(creep);
-        }
-        //var flags = creep.room.find(FIND_FLAGS)
-        //  console.log(JSON.stringify(flags));
 
     }
 

@@ -30,19 +30,38 @@ var roleHarvester = {
             creep.harvest(Game.getObjectById(creep.memory.source));
         } else {
             creep.memory.working = false;
-            var transferPartner = _.filter(Game.creeps, {
+
+            if (!creep.memory.partner || Game.getObjectById(creep.memory.partner) == undefined) {
+                var transferPartner = _.filter(Game.creeps, {
                 memory: {
                     role: 'carrier',
-                    transit: false
+                    transit: false,
+                    partner: false
                 }
-            })
-            var trans = transferPartner[_.random(0, transferPartner.length)];
-            try {
-                          creep.say(trans.name);
+            });
+            console.log(transferPartner);
+            try{
+                var trans = transferPartner[0];
+                creep.memory.partner = trans.id;
+                trans.memory.partner = creep.id
             } catch (e) {
+                console.log('No carriers available: '+ e);
+            }
 
+            } else {
+            
+            try {
+              if(creep.transfer(Game.getObjectById(creep.memory.partner), RESOURCE_ENERGY)  == ERR_NOT_IN_RANGE) {
+                  
+              } else {
+                  creep.memory.partner = false;
+              }
+                
+            } catch (e) {
+                console.log('Partner Not close enough or not found: ' + e);
+            }
             };
-            creep.transfer(trans, RESOURCE_ENERGY);
+
         }
 
 

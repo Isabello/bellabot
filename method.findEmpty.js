@@ -6,7 +6,6 @@ var findEmpty = {
       //PRIORITIZE CLOSEST FLAGS
 
       var findEmptyFlags = _.filter(Game.flags, { memory: { 'occupied' : false }} );
-
 /*
       var flags = creep.room.find(FIND_FLAGS, {
         filter: function (flag) {

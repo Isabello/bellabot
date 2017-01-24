@@ -17,7 +17,7 @@ var roleSpawner = {
 
         for (var name in Game.rooms) {
             console.log('Room "' + name + '" has ' + Game.rooms[name].energyAvailable + ' energy');
-            if (Game.rooms[name].energyAvailable >= 200) {
+            if (Game.rooms[name].energyAvailable >= 200 && spawn.room.controller.level <= 2) {
                 if (_.size(_.filter(Game.creeps, {
                         memory: {
                             role: 'harvester'
@@ -51,6 +51,8 @@ var roleSpawner = {
                         role: 'builder'
                     });
                 } 
+            } else {
+                
             }
         }
     }

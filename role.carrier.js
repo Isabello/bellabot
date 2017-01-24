@@ -48,23 +48,29 @@ var roleCarrier = {
                 creep.moveTo(targets[0]);
             }
         } else {
-            if (!creep.memory.partner) {
+            /*
+            
                 var transferPartner = _.filter(Game.creeps, {
                     memory: {
-                        working: false
+                        working: false,
+                        partner: creep.id
                     }
-                });
-                console.log(transferPartner);
+                });            
+            if (!creep.memory.partner) {
                 try {
-                                  creep.memory.partner = transferPartner[_.random(0, transferPartner.length)].id;
+                    creep.memory.partner = transferPartner[0].id;
                 } catch (e) {
                   console.log('no id avails');
                 }
-
+            } else if (transferPartner[0] == undefined) {
+                creep.memory.partner = false;
             }
+            */
             if (creep.memory.partner) {
                 creep.moveTo(Game.getObjectById(creep.memory.partner), {reusePath: 10});
             }
+
+
         }
     }
 };
