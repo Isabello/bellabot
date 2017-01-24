@@ -10,11 +10,11 @@ module.exports = {
             if (!Game.creeps[name]) {
                 try {
                     Memory.flags[Memory.creeps[name].assignment.name] = {'occupied': false};
-                    delete Memory.creeps[name];
                 }
                  catch (e){
-                    
+                    console.log('clean up failed '+ e);
                 }
+                delete Memory.creeps[name];
                     
             }
         }

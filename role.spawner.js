@@ -32,7 +32,7 @@ var roleSpawner = {
                         }
                     })) < spawn.memory.MAX.MAX_CARRIER) {
                     var newName = spawn.createCreep([CARRY, MOVE, MOVE], undefined, {
-                        role: 'carrier'
+                        role: 'carrier', partner: false, transit: false
                     });
                 } else if (_.size(_.filter(Game.creeps, {
                         memory: {

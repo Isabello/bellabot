@@ -3,10 +3,6 @@ var roleCarrier = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
-        if (creep.memory.transit == undefined) {
-            creep.memory.transit = false;
-        }
-
         /*
                 if ((creep.memory.partner == '' || creep.memory.partner == null) &&
                     (_(Game.creeps).filter({
@@ -22,19 +18,11 @@ var roleCarrier = {
                 }
                 */
 
-        if (creep.memory.transit && creep.carry.energy == 0) {
-            creep.memory.transit = false;
-            creep.say('Acquiring!');
-        }
-
-
         if (!creep.memory.transit && creep.carry.energy == creep.carryCapacity) {
             creep.memory.transit = true;
             creep.memory.partner = false;
             creep.say('Returning!');
         }
-
-
 
         if (creep.memory.transit) {
             var targets = creep.room.find(FIND_STRUCTURES, {
@@ -46,6 +34,9 @@ var roleCarrier = {
             });
             if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(targets[0]);
+            } else {
+               creep.memory.partner = false;
+               creep.memory.transit = false;
             }
         } else {
             /*
