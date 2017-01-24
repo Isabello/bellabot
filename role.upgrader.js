@@ -20,10 +20,11 @@ var roleUpgrader = {
         else {
           var targets = creep.room.find(FIND_STRUCTURES, {
               filter: (structure) => {
-                  return (structure.structureType == STRUCTURE_SPAWN);
+                  return (structure.structureType == STRUCTURE_SPAWN,
+                          structure.structureType == STRUCTURE_EXTENSION  );
               }
           }); //Room is hardcoded
-          if ((creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) && Game.rooms.E87S46.energyAvailable >= 200 ) {
+          if ((creep.withdraw(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) && Game.rooms.sim.energyAvailable >= 150 ) {
             creep.moveTo(targets[0]);
           };
 

@@ -31,79 +31,37 @@ var roleHarvester = {
         } else {
             creep.memory.working = false;
 
-            if (!creep.memory.partner || Game.getObjectById(creep.memory.partner) == undefined) {
+            if (!creep.memory.partner || Game.getObjectById(creep.memory.partner) == undefined || Memory.creeps[Game.getObjectById(creep.memory.partner)] == false ) {
+                creep.memory.partner = false;
                 var transferPartner = _.filter(Game.creeps, {
-                memory: {
-                    role: 'carrier',
-                    transit: false,
-                    partner: false
+                    memory: {
+                        role: 'carrier',
+                        transit: false,
+                        partner: false
+                    }
+                });
+
+                try {
+                    var trans = transferPartner[0];
+                    creep.memory.partner = trans.id;
+                    trans.memory.partner = creep.id;
+                } catch (e) {
+                    console.log('No carriers available: ' + e);
                 }
-            });
-            console.log(transferPartner);
-            try{
-                var trans = transferPartner[0];
-                creep.memory.partner = trans.id;
-                trans.memory.partner = creep.id
-            } catch (e) {
-                console.log('No carriers available: '+ e);
-            }
 
             } else {
-            
-            try {
-              if(creep.transfer(Game.getObjectById(creep.memory.partner), RESOURCE_ENERGY)  == ERR_NOT_IN_RANGE) {
-                  
-              } else {
-                  creep.memory.partner = false;
-              }
-                
-            } catch (e) {
-                console.log('Partner Not close enough or not found: ' + e);
-            }
-            };
+                try {
+                    if (creep.transfer(Game.getObjectById(creep.memory.partner), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 
-        }
-
-
-
-
-        // Now we want to mine the closest source!
-        /*    if (creep.memory.source.id == undefined) {
-                var sources = creep.pos.findClosestByPath(FIND_SOURCES);
-                creep.memory.source.id = sources.id;
-            }*/
-        /*
-                if (creep.memory.sources == undefined || creep.memory.sources == null) {
-                   creep.memory.sources = creep.pos.findClosestByPath(FIND_SOURCES);
-                  // creep.memory.sources = creep.room.find(FIND_SOURCES)[_.random(0,3)];
-                }
-
-                if(creep.carry.energy < creep.carryCapacity) {
-                    var result = creep.harvest(Game.getObjectById(creep.memory.sources.id));
-                    if (result == OK){
-                    return
-                    } else if(creep.harvest(Game.getObjectById(creep.memory.sources.id) == ERR_NOT_IN_RANGE )) {
-                        creep.moveTo(Game.getObjectById(creep.memory.sources.id));
                     } else {
-                        creep.say(result);
+                        creep.memory.partner = false;
                     }
-                    //creep.harvest(Game.getObjectById(creep.memory.sources.id));
+
+                } catch (e) {
+                    console.log('Partner Not close enough or not found: ' + e);
                 }
-                else {
-                    var targets = creep.room.find(FIND_STRUCTURES, {
-                            filter: (structure) => {
-                                return (structure.structureType == STRUCTURE_EXTENSION ||
-                                        structure.structureType == STRUCTURE_SPAWN ||
-                                        structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
-                            }
-                    });
-                    if(targets.length > 0) {
-                        if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(targets[0]);
-                        }
-                    }
-                }
-        */
+            }
+        }
     }
 };
 

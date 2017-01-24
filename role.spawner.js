@@ -17,7 +17,7 @@ var roleSpawner = {
 
         for (var name in Game.rooms) {
             console.log('Room "' + name + '" has ' + Game.rooms[name].energyAvailable + ' energy');
-            if (Game.rooms[name].energyAvailable >= 200 && spawn.room.controller.level <= 2) {
+            if (Game.rooms[name].energyAvailable >= 200 && spawn.room.controller.level < 2) {
                 if (_.size(_.filter(Game.creeps, {
                         memory: {
                             role: 'harvester'
@@ -51,8 +51,40 @@ var roleSpawner = {
                         role: 'builder'
                     });
                 } 
-            } else {
-                
+            } else { 
+                if (_.size(_.filter(Game.creeps, {
+                        memory: {
+                            role: 'harvester'
+                        }
+                    })) < spawn.memory.MAX.MAX_HARVESTERS) {
+                    var newName = spawn.createCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], undefined, {
+                        role: 'harvester'
+                    });
+                } else if (_.size(_.filter(Game.creeps, {
+                        memory: {
+                            role: 'carrier'
+                        }
+                    })) < spawn.memory.MAX.MAX_CARRIER) {
+                    var newName = spawn.createCreep([CARRY, MOVE, MOVE, MOVE, MOVE], undefined, {
+                        role: 'carrier', partner: false, transit: false
+                    });
+                    } else if (_.size(_.filter(Game.creeps, {
+                        memory: {
+                            role: 'upgrader'
+                        }
+                    })) < spawn.memory.MAX.MAX_UPGRADERS) {
+                    var newName = spawn.createCreep([WORK, CARRY, MOVE], undefined, {
+                        role: 'upgrader'
+                    });
+                    }else if (_.size(_.filter(Game.creeps, {
+                        memory: {
+                            role: 'builder'
+                        }
+                    })) < spawn.memory.MAX.MAX_BUILDERS) {
+                    var newName = spawn.createCreep([WORK, CARRY, CARRY, CARRY, CARRY, MOVE], undefined, {
+                        role: 'builder'
+                    });
+                } 
             }
         }
     }

@@ -18,6 +18,10 @@ var roleCarrier = {
                 }
                 */
 
+        if (Game.getObjectById(creep.memory.partner) == undefined && creep.memory.partner){
+            creep.memory.partner = false;
+            console.log('Yuuut');
+        }
         if (!creep.memory.transit && creep.carry.energy == creep.carryCapacity) {
             creep.memory.transit = true;
             creep.memory.partner = false;
