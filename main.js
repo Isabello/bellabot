@@ -4,28 +4,34 @@ var roleBuilder = require('role.builder');
 var roleSpawner = require('role.spawner');
 var roleConstructor = require('role.constructor');
 var roleCarrier = require('role.carrier');
+var roleFighter = require('role.fighter');
+var roleHealer = require('role.healer');
 var cleaner = require('cleaner');
 var areaInit = require('method.areaInit');
 var initFlags = require('method.initFlags');
+var waypointFlags = require('method.waypointFlags');
 var _ = require('lodash');
 
 module.exports.loop = function() {
 
-    cleaner.tick();
-    /* Spawns new creeps */
-    for (var name in Game.spawns) {
-        var spawn = Game.spawns[name];
-        if (spawn.memory.marked == true) {
-            if (spawn.memory.flags == false) {
-                initFlags.run(spawn);
-            }
-        }
-        if (spawn.memory.init == undefined) {
-            areaInit.run(spawn);
-        }
-        roleSpawner.run(spawn);
-        roleConstructor.run(spawn);
+  var activeCreeps = {
+          'roles': {
+              harvester: 0,
+              carrier: 0,
+              builder: 0,
+              upgrader: 0,
+              fighter: 0,
+              healer: 0,
+          }
+      }
+      var role;
+
+
+    for (var thisRoom in Game.rooms) {
+      cleaner.tick(thisRoom);
+      waypointFlags.run(thisRoom);
     }
+
 
 /*
     var tower = Game.getObjectById('TOWER_ID');
@@ -46,6 +52,10 @@ module.exports.loop = function() {
 
     for (var name in Game.creeps) {
         var creep = Game.creeps[name];
+        if (creep.spawning == true) {
+            return
+        }
+
         if (creep.memory.role == 'harvester') {
             roleHarvester.run(creep);
         }
@@ -58,9 +68,31 @@ module.exports.loop = function() {
         if (creep.memory.role == 'carrier') {
             roleCarrier.run(creep);
         }
-            
-    
+        if (creep.memory.role == 'fighter') {
+            roleFighter.run(creep);
+        }
+        if (creep.memory.role == 'healer') {
+            roleHealer.run(creep);
+        }
+        role = Game.creeps[name].memory.role;
+        activeCreeps.roles[role] += 1;
+    }
+    /* Spawns new creeps */
+    for (var name in Game.spawns) {
+        var spawn = Game.spawns[name];
+        if (spawn.memory.marked == true) {
+            if (spawn.memory.flags == false) {
+                initFlags.run(spawn);
+            }
+        }
+        if (spawn.memory.init == undefined) {
+            areaInit.run(spawn);
+        }
+        console.log(JSON.stringify(activeCreeps.roles));
+        roleSpawner.run(spawn, activeCreeps);
+        roleConstructor.run(spawn);
+
     }
     /*
-    for (var name in Game.creeps) {          var creep = Game.creeps[name];  creep.memory.partner = false;    }*/
+    for (var name in Game.creeps) {          var creep = Game.creeps[name];  creep.memory.home = false;    }*/
 }

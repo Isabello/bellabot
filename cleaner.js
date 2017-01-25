@@ -1,29 +1,43 @@
 //test 2
 module.exports = {
 
-    tick: function() {
+    tick: function(thisRoom) {
         // Always place this memory cleaning code at the very top of your main loop!
 
         for (var name in Memory.creeps) {
 
-          // Required to free up previously used flags! Smart!!
+            // Required to free up previously used flags! Smart!!
             if (!Game.creeps[name]) {
                 try {
-                    Memory.flags[Memory.creeps[name].assignment.name] = {'occupied': false};
+                    Memory.flags[Memory.creeps[name].assignment.name] = {
+                        'occupied': false
+                    };
+                } catch (e) {
+                    console.log('clean up failed ' + e);
                 }
-                 catch (e){
-                    console.log('clean up failed '+ e);
-                }
-                
+
                 delete Memory.creeps[name];
-                    
+
             }
         }
-        /* for manual flag clean up
-         for (var name in Memory.flags) {
-             delete Memory.flags[name];
-            }
-*/
-}
 
+        var flags = Game.rooms[thisRoom].find(FIND_FLAGS, {
+            filter: {
+                color: COLOR_PURPLE
+            }
+        });
+            console.log(flags);
+
+        for (var flag in flags) {
+            var carriers = _.size(_.filter(Game.creeps, {
+                memory: {
+                    role: 'carrier',
+                    home: flags[flag].name
+                }
+            }));
+
+
+            flags[flag].memory.carrier = carriers;
+        }
+    }
 };

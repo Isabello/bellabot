@@ -28,7 +28,8 @@ var roleConstructor = {
                         break;
                     } else {
                         Game.rooms.sim.createFlag(path_food[i].x, path_food[i].y, 'road_' + n + '_' + i, COLOR_GREY);
-                        //   pos.createConstructionSite(STRUCTURE_ROAD);
+                        var pos = new RoomPosition(path_food[i].x, path_food[i].y, spawn.room.name);
+                        pos.createConstructionSite(STRUCTURE_ROAD);
                     }
                 }
             }
