@@ -19,7 +19,7 @@ var roleHarvester = {
 
         // Here we tell the creep to move to its new home
         if ((creep.pos.x != creep.memory.assignment.pos.x) || (creep.pos.y != creep.memory.assignment.pos.y || creep.pos.roomName != creep.memory.assignment.pos.roomName)) {
-            if (creep.room.name != creep.memory.assignment.pos.roomName) {
+            if (creep.room.name != creep.memory.assignment.room.name) {
                 creep.moveTo(creep.pos.findClosestByRange(creep.room.findExitTo(creep.memory.assignment.pos.roomName)));
             } else {
                 creep.moveTo(creep.memory.assignment.pos.x, creep.memory.assignment.pos.y);
@@ -47,36 +47,39 @@ var roleHarvester = {
             if (!sources[0]) {
                 var creeps = creep.pos.findInRange(FIND_MY_CREEPS, 10, {
                     filter: (newCreeps) => {
-                        return newCreeps.name != creep.name
+                        return (newCreeps.memory.role != 'harvester');
                     }
                 });
                 for (var i in creeps) {
                     if ((creep.transfer(creeps[i], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)) {
-                        creep.moveTo(creeps[i], {
+                        if (creep.moveTo(creeps[i], {
                             reusePath: 10
-                        });
+                        }) == OK) {
+                        break;
                     }
-                }
-            }
-
-            if (!creeps) {
-                var targets = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-                console.log('building');
-                if (targets) {
-                    if (creep.build(targets) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(targets);
-                    }
-                }
-            }
-            for (var i in sources) {
-                if ((creep.transfer(sources[i], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)) {
-                    creep.moveTo(sources[i], {
-                        reusePath: 10
-                    });
                 }
             }
         }
+        console.log('creeps: ' + creeps);
+        if (creeps == undefined || _.size(creeps) == 0) {
+            var targets = creep.pos.findClosestByRange(FIND_MY_CONSTRUCTION_SITES, 5);
+            if (targets) {
+                if (creep.build(targets) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets);
+                }
+            }
+        }
+        for (var i in sources) {
+            if ((creep.transfer(sources[i], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)) {
+                if (creep.moveTo(sources[i], {
+                    reusePath: 10
+                }) == OK) {
+                break;
+            }
+        }
     }
+}
+}
 }
 
 module.exports = roleHarvester;

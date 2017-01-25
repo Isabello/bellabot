@@ -20,13 +20,12 @@ var roleFighter = {
           }
         }
 
-        if (!creep.memory.fighting) {
+        if (!creep.memory.fighting && creep.pos.getRangeTo(Game.flags[creep.memory.home]) > 3 ) {
             creep.moveTo(Game.flags[creep.memory.home]);
         }
 
         var enemies= creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        console.log(enemies);
-        if (enemies) {
+       if (enemies) {
             creep.moveTo(enemies);
             creep.attack(enemies);
             creep.memory.fighting = true;
@@ -34,6 +33,7 @@ var roleFighter = {
         else {
               creep.memory.fighting = false;
         }
+
     }
 };
 

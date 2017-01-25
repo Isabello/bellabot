@@ -15,7 +15,6 @@ var roleSpawner = {
             spawn.memory.init = true;
         }
 
-                      console.log(activeCreeps.roles.harvester);
         for (var name in Game.rooms) {
             console.log('Room "' + name + '" has ' + Game.rooms[name].energyAvailable + ' energy');
             if (Game.rooms[name].energyAvailable >= 200 && spawn.room.controller.level < 2) {
@@ -41,11 +40,11 @@ var roleSpawner = {
             } else if (Game.rooms[name].energyAvailable >= 350 && spawn.room.controller.level == 2) {
 
                 if (activeCreeps.roles.harvester < spawn.memory.MAX.MAX_HARVESTERS) {
-                    var newName = spawn.createCreep([WORK, WORK, WORK, CARRY, MOVE, CARRY, MOVE], undefined, {
+                    var newName = spawn.createCreep([WORK, WORK, MOVE, MOVE, MOVE, CARRY, CARRY, MOVE], undefined, {
                         role: 'harvester'
                     });
                 } else if (activeCreeps.roles.carrier < spawn.memory.MAX.MAX_CARRIER) {
-                    var newName = spawn.createCreep([CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, {
+                    var newName = spawn.createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, {
                         role: 'carrier',
                         partner: false,
                         transit: false

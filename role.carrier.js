@@ -20,7 +20,7 @@ var roleCarrier = {
                 });
 
                 for (var i in home) {
-                    if (Memory.flags[home[i].name].carrier < 2) {
+                    if (Memory.flags[home[i].name].carrier < Memory.flags[home[i].name].allowed) {
                         creep.memory.home = home[i].name;
                         Memory.flags[home[i].name].carrier += 1;
                         break;
@@ -28,11 +28,16 @@ var roleCarrier = {
                 }
             }
         }
-        if (creep.pos.getRangeTo(Game.flags[creep.memory.home]) > 0  && !creep.memory.transit) {
+
+        if (creep.pos.getRangeTo(Game.flags[creep.memory.home]) > 7  && !creep.memory.transit) {
             if (creep.room.name != Game.flags[creep.memory.home].pos.roomName) {
-                creep.moveTo(creep.pos.findClosestByRange(creep.room.findExitTo(Game.flags[creep.memory.home].pos.roomName)));
+                creep.moveTo(creep.pos.findClosestByRange(creep.room.findExitTo(Game.flags[creep.memory.home].pos.roomName), {
+                    reusePath: 10
+                }));
             } else {
-                creep.moveTo(Game.flags[creep.memory.home]);
+                creep.moveTo(Game.flags[creep.memory.home], {
+                    reusePath: 10
+                });
             }
             return;
         }
@@ -43,8 +48,6 @@ var roleCarrier = {
                     return (structure.structureType == STRUCTURE_CONTAINER) && structure.store[RESOURCE_ENERGY] != 0;
                 }
             });
-
-            var currentRoom = Game.rooms.E87S46;
 
             if ((creep.withdraw(sources, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)) {
                 creep.moveTo(sources, {
@@ -62,7 +65,6 @@ var roleCarrier = {
                         structure.structureType == STRUCTURE_TOWER) && structure.energy != structure.energyCapacity;
                 }
             });
-            console.log('transit: ' + sources);
             var maxAmount = -1;
             var maxSource = null;
             var maxRange = 40;
@@ -79,16 +81,16 @@ var roleCarrier = {
 
             for (var i in sources) {
                 if (creep.transfer(sources[i], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources[i], {
+                   if(  creep.moveTo(sources[i], {
                         reusePath: 10
-                    });
+                    }) == OK) {
+                      break;
+                    }
                 }
             }
-
-            if (!sources[0]) {
-              creep.moveTo(creep.pos.findClosestByRange(creep.room.findExitTo(Game.rooms['E87S46'])));
-            }
         }
+
+
     }
 };
 
