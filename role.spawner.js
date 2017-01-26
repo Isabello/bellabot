@@ -40,29 +40,58 @@ var roleSpawner = {
             } else if (Game.rooms[name].energyAvailable >= 350 && spawn.room.controller.level == 2) {
 
                 if (activeCreeps.roles.harvester < spawn.memory.MAX.MAX_HARVESTERS) {
-                    var newName = spawn.createCreep([WORK, WORK, MOVE, MOVE, MOVE, CARRY, CARRY, MOVE], undefined, {
+                    var newName = spawn.createCreep([WORK, WORK, WORK, CARRY, MOVE, MOVE], undefined, {
                         role: 'harvester'
                     });
                 } else if (activeCreeps.roles.carrier < spawn.memory.MAX.MAX_CARRIER) {
-                    var newName = spawn.createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, {
+                    var newName = spawn.createCreep([CARRY,  MOVE, MOVE, MOVE, CARRY, MOVE, MOVE, MOVE,CARRY, MOVE], undefined, {
                         role: 'carrier',
-                        partner: false,
                         transit: false
                     });
                 } else if (activeCreeps.roles.upgrader < spawn.memory.MAX.MAX_UPGRADERS) {
-                    var newName = spawn.createCreep([WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], undefined, {
+                    var newName = spawn.createCreep([WORK, CARRY, CARRY, WORK, MOVE, MOVE, MOVE], undefined, {
                         role: 'upgrader'
                     });
                 } else if (activeCreeps.roles.builder < spawn.memory.MAX.MAX_BUILDERS) {
-                    var newName = spawn.createCreep([WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], undefined, {
+                    var newName = spawn.createCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, {
                         role: 'builder'
                     });
-                } else if (activeCreeps.roles.fighter <= activeCreeps.roles.healer) {
+                } else if (activeCreeps.roles.fighter <= activeCreeps.roles.healer && activeCreeps.roles.fighter <= 2) {
                     var newName = spawn.createCreep([ATTACK, ATTACK, ATTACK, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE], undefined, {
                         role: 'fighter',
                         fighting: false
                     });
-                } else {
+                } else if (activeCreeps.roles.healer <= 2) {
+                    var newName = spawn.createCreep([HEAL, MOVE, MOVE, MOVE, MOVE], undefined, {
+                        role: 'healer',
+                        healing: false
+                    });
+                }
+            } else if (Game.rooms[name].energyAvailable >= 350 && spawn.room.controller.level == 3) {
+
+                if (activeCreeps.roles.harvester < spawn.memory.MAX.MAX_HARVESTERS) {
+                    var newName = spawn.createCreep([WORK, WORK, WORK, WORK, CARRY, MOVE], undefined, {
+                        role: 'harvester'
+                    });
+                } else if (activeCreeps.roles.carrier < spawn.memory.MAX.MAX_CARRIER) {
+                    var newName = spawn.createCreep([CARRY,  MOVE, MOVE, MOVE, CARRY, MOVE, MOVE, MOVE,CARRY, MOVE], undefined, {
+                        role: 'carrier',
+                        transit: false
+                    });
+                } else if (activeCreeps.roles.upgrader < spawn.memory.MAX.MAX_UPGRADERS) {
+                    var newName = spawn.createCreep([WORK, CARRY, CARRY, WORK, MOVE, MOVE, MOVE], undefined, {
+                        role: 'upgrader'
+                    });
+                } else if (activeCreeps.roles.builder < spawn.memory.MAX.MAX_BUILDERS) {
+                    var newName = spawn.createCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, {
+                        role: 'builder'
+                    });
+                } else if (activeCreeps.roles.fighter <= activeCreeps.roles.healer && activeCreeps.roles.fighter <= 2) {
+                    var newName = spawn.createCreep([ATTACK, ATTACK, ATTACK, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE], undefined, {
+                        role: 'fighter',
+                        fighting: false
+                    });
+                } else if (activeCreeps.roles.healer <= 2) {
                     var newName = spawn.createCreep([HEAL, MOVE, MOVE, MOVE, MOVE], undefined, {
                         role: 'healer',
                         healing: false

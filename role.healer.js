@@ -21,28 +21,28 @@ var roleHealer = {
           }
         }
 
-        if (!creep.memory.healing && creep.pos.getRangeTo(Game.flags[creep.memory.home]) > 0 ) {
-          if (creep.room.name != Game.flags[creep.memory.home].room.name) {
-              creep.moveTo(creep.pos.findClosestByRange(creep.room.findExitTo(Game.flags[creep.memory.home].room.name), {reusePath: 10}));
-          } else {
-              creep.moveTo(Game.flags[creep.memory.home], {reusePath: 10});
-          }
-          return;
-        }
-
         var target = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
             filter: function(object) {
-                return object.memory.role = 'fighter' && object.hits < object.hitsMax;
+                return object.hits < object.hitsMax;
             }
         });
-
-
         if(target) {
             if(creep.heal(target) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {reusePath: 10});
-                console.log('healing?')
+
             }
           creep.memory.healing = true;
+        } else {
+            creep.memory.healing = false;
+        }
+
+        if (!creep.memory.healing && creep.pos.getRangeTo(Game.flags[creep.memory.home]) > 2 ) {
+          if (creep.room.name != Game.flags[creep.memory.home].pos.roomName) {
+              creep.moveTo(creep.pos.findClosestByRange(creep.room.findExitTo(Game.flags[creep.memory.home].pos.roomName), {reusePath: 10}));
+          } else {
+              creep.moveTo(Game.flags[creep.memory.home]);
+          }
+          return;
         }
     }
 };

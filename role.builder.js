@@ -1,3 +1,5 @@
+var findEmpty = require('method.findEmpty');
+
 var roleBuilder = {
 
     /** @param {Creep} creep **/
@@ -12,6 +14,18 @@ var roleBuilder = {
             creep.say('Buildin^_^');
         }
 
+        if (!creep.memory.home && creep.spawning == false) {
+            try {
+                findEmpty.run(creep);
+            } catch (e) {
+                creep.moveTo(Game.flags.Rally);
+                return
+            }
+        }
+
+
+
+
         if (creep.memory.building) {
             var targets = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
             if (targets) {
@@ -19,19 +33,42 @@ var roleBuilder = {
                     creep.moveTo(targets);
                 }
             } else {
-                var roadToRepair = creep.pos.findClosest(FIND_STRUCTURES, {
+                var containerToRepair = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: function(object) {
-                        return object.structureType === STRUCTURE_ROAD && (object.hits > object.hitsMax / 3);
+                        return object.structureType === STRUCTURE_CONTAINER && (object.hits > object.hitsMax / 3);
                     }
                 });
-
-                if (roadToRepair) {
-                    creep.moveTo(roadToRepair);
-                    creep.repair(roadToRepair);
+                if (containerToRepair) {
+                    creep.moveTo(containerToRepair);
+                    creep.repair(containerToRepair);
                 } else {
-                  creep.memory.building = false;
+                    var roadToRepair = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                        filter: function(object) {
+                            return (object.structureType === STRUCTURE_ROAD || object.structureType === STRUCTURE_WALL) && (object.hits > object.hitsMax / 3);
+                        }
+                    });
+
+                    if (roadToRepair) {
+                        creep.moveTo(roadToRepair);
+                        creep.repair(roadToRepair);
+                    } else {
+                        creep.memory.building = false;
+                    }
                 }
             }
+            if (!creep.memory.building) {
+                if (creep.room.name != Game.flags[creep.memory.home].pos.roomName) {
+                    creep.moveTo(creep.pos.findClosestByRange(creep.room.findExitTo(Game.flags[creep.memory.home].pos.roomName), {
+                        reusePath: 10
+                    }));
+                } else if (creep.pos.getRangeTo(Game.flags[creep.memory.home]) >= 6) {
+                    creep.moveTo(Game.flags[creep.memory.home], {
+                        reusePath: 10
+                    });
+                    return;
+                }
+            }
+
         } else {
             var sources = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => {

@@ -3,21 +3,23 @@ var waypointFlags = {
     run: function(thisRoom) {
 
 
-        var flags = Game.rooms[thisRoom].find(FIND_FLAGS, {
-            filter: {
-                color: COLOR_ORANGE
-            }
+        var flags = _.filter(Game.flags, {
+            color: COLOR_ORANGE
         });
-        var flags_fighters = Game.rooms[thisRoom].find(FIND_FLAGS, {
-            filter: {
-                color: COLOR_YELLOW
-            }
+
+        var flags_fighters = _.filter(Game.flags, {
+            color: COLOR_YELLOW
         });
+
+        var flags_builders = _.filter(Game.flags, {
+            color: COLOR_BROWN
+        });
+
         for (var i in flags) {
             flags[i].memory = {
                 'home': false,
                 'carrier': 0,
-                'storage': 0
+                'allowed': 0
             };
             console.log(flags[i].color);
             flags[i].setColor(COLOR_PURPLE, COLOR_PURPLE);
@@ -28,6 +30,14 @@ var waypointFlags = {
                 'home': false
             };
             flags_fighters[i].setColor(COLOR_RED, COLOR_RED);
+        }
+        for (var i in flags_builders) {
+            flags_builders[i].memory = {
+              'home': false,
+              'builder': 0,
+              'allowed': 2
+            };
+            flags_builders[i].setColor(COLOR_GREEN, COLOR_GREEN);
         }
     }
 };
