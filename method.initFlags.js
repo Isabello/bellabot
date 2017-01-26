@@ -1,14 +1,18 @@
 var initFlags = {
 
-    run: function(spawn) {
+    run: function() {
 
-        var flags = spawn.room.find(FIND_FLAGS);
+        var flags = Game.flags;
         for (var i in flags) {
-            flags[i].memory = {'occupied': false};
+            if (flags[i].memory.occupied == undefined) {
+                flags[i].memory = {
+                    'occupied': false
+                };
+            }
         }
-                console.log('flagsdone');
-                spawn.memory.flags = true;
+        console.log('flagsdone');
+
     }
-};
+}
 
 module.exports = initFlags;
