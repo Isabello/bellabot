@@ -114,7 +114,7 @@ var roleSpawner = {
                                 role: 'upgrader'
                             });
                         } else if (Memory.activeCreeps.roles.claimer < _.size(_.filter(Game.flags, {
-                                color: COLOR_RED
+                                color: COLOR_BROWN
                             }))) {
                             var newName = spawn.createCreep([MOVE, MOVE, CLAIM], undefined, {
                                 role: 'claimer'

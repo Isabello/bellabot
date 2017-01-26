@@ -54,10 +54,17 @@ var creepMethods = {
 
         if (creep.memory.role == 'claimer') {
             var findEmptyFlags = _.filter(Game.flags, {
-                color: COLOR_RED,
+                color: COLOR_BROWN,
             });
         }
 
+        if (creep.memory.role == 'fighter' || creep.memory.role == 'healer'){
+          var findEmptyFlags = _.filter(Game.flags, {
+              color: COLOR_RED,
+          });
+          creep.memory.home = findEmptyFlags[0].name;
+          return;
+        }
 
         for (var i in findEmptyFlags) {
             if (findEmptyFlags[i].memory.occupied == false || findEmptyFlags[i].memory.occupied == undefined) {
@@ -116,9 +123,15 @@ var creepMethods = {
     },
     healer: function(creep) {
         this.heal(creep);
+        if (creep.memory.healing == false) {
+                  this.combatMovement(creep);
+        }
     },
     fighter: function(creep) {
         this.fight(creep);
+        if (creep.memory.fighting == false) {
+                  this.combatMovement(creep);
+        }
     },
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +159,6 @@ var creepMethods = {
                 creep.moveTo(target, {
                     reusePath: 10
                 });
-
             }
             creep.memory.healing = true;
         } else {
@@ -279,6 +291,24 @@ var creepMethods = {
             console.log('failed to return');
         }
     },
+    combatMovement: function(creep) {
+        try {
+            creep.say('Rallying');
+            if (creep.room.name != Game.flags[creep.memory.home].pos.roomName) {
+                creep.moveTo(creep.pos.findClosestByRange(creep.room.findExitTo(Game.flags[creep.memory.home].pos.roomName), {
+                    reusePath: 10
+                }));
+
+            } else if (creep.pos.getRangeTo(Game.flags[creep.memory.home]) >= 3) {
+                creep.moveTo(Game.flags[creep.memory.home], {
+                    reusePath: 10
+                });
+            }
+        } catch (e) {
+            console.log('failed to return');
+        }
+    },
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Energy related actions
