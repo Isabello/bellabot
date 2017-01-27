@@ -142,9 +142,21 @@ var creepMethods = {
 
     //Combat Actions
     fight: function(creep) {
-        var enemies = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        var enemies = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
+            filter: function(creep) {
+                return creep.getActiveBodyparts(HEAL) > 0
+            }
+        });
+        if (enemies == undefined || null) {
+            enemies = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
+                filter: function(creep) {
+                    return creep.getActiveBodyparts(ATTACK) > 0
+                }
+            });
+        }
         if (enemies) {
             creep.moveTo(enemies);
+            console.log('fightin' + enemies);
             creep.attack(enemies);
             creep.memory.fighting = true;
         } else {
@@ -283,7 +295,9 @@ var creepMethods = {
         try {
             creep.say('Returning');
             if (creep.room.name != Game.flags[creep.memory.home].pos.roomName) {
-                creep.moveTo(creep.pos.findClosestByPath(creep.room.findExitTo(Game.flags[creep.memory.home].pos.roomName)));
+                var exitDir = Game.map.findExit(creep.room, Game.flags[creep.memory.home].pos.roomName);
+                var exit = creep.pos.findClosestByRange(exitDir);
+                creep.moveTo(exit);
             } else if (creep.pos.getRangeTo(Game.flags[creep.memory.home]) >= 1) {
                 var nextStep = this.nextStepIntoRoom(creep.pos, Game.flags[creep.memory.home].pos.roomName);
                 if (nextStep == undefined) {
@@ -304,17 +318,18 @@ var creepMethods = {
         try {
             creep.say('Rallying');
             if (creep.room.name != Game.flags[creep.memory.home].pos.roomName) {
-                creep.moveTo(creep.pos.findClosestByRange(creep.room.findExitTo(Game.flags[creep.memory.home].pos.roomName), {
-                    reusePath: 10
-                }));
-            } else if (creep.pos.getRangeTo(Game.flags[creep.memory.home]) >= 3) {
-                var nextStep = this.nextRoom(creep.pos, Game.flags[creep.memory.home].pos.roomName);
+                creep.moveTo(creep.pos.findClosestByPath(creep.room.findExitTo(Game.flags[creep.memory.home].pos.roomName)));
+            } else if (creep.pos.getRangeTo(Game.flags[creep.memory.home]) >= 1) {
+                var nextStep = this.nextStepIntoRoom(creep.pos, Game.flags[creep.memory.home].pos.roomName);
                 if (nextStep == undefined) {
                     creep.moveTo(Game.flags[creep.memory.home], {
                         reusePath: 10
                     });
+                } else {
+                    creep.moveTo(nextStep);
                 }
-
+            } else {
+                creep.memory.return = false;
             }
         } catch (e) {
             console.log('failed to return: ' + e);
@@ -388,10 +403,19 @@ var creepMethods = {
         this.storeSource(creep, sources);
     },
     storeEnergyCarrier: function(creep) {
-        var sources = this.getBuildingsList(creep);
+        var sources = this.getMyWorkers(creep);
         if (sources == (undefined || null)) {
-            creep.moveTo(Game.spawns['Spawn1']);
-            return;
+            sources = this.getBuildingsList(creep);
+        }
+        if (sources == (undefined || null)) {
+            if (Game.rooms[creep.pos.roomName].energyAvailable >= Game.rooms[creep.pos.roomName].energyCapacityAvailable - 50 && creep.pos.roomName == Game.spawns['Spawn1'].pos.roomName) {
+                sources = this.getContainerListEmpty(creep);
+                creep.say('Storing in a container instead!');
+            } else {
+                          creep.moveTo(Game.spawns['Spawn1']);
+                          return;
+            }
+
         }
         this.storeSource(creep, sources);
     },
@@ -490,16 +514,25 @@ var creepMethods = {
     getContainerListEmpty: function(creep) {
         var sources = creep.pos.findClosestByRange(creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return (structure.structureType == STRUCTURE_CONTAINER) && structure.store[RESOURCE_ENERGY] != structure.energyCapacity;
+                return (structure.structureType == STRUCTURE_CONTAINER) && structure.store[RESOURCE_ENERGY] != structure.storeCapacity;
             }
         }));
+        console.log(sources);
         return sources;
     },
 
     getMyCarriers: function(creep) {
         var sources = creep.pos.findClosestByRange(creep.room.find(FIND_MY_CREEPS, {
             filter: (creeps) => {
-                return (creeps.memory.role == 'carrier') && creeps.carry.energy != creeps.carryCapacity && creep.pos.findInRange(creeps, 7);
+                return (creeps.memory.role == 'carrier') && creeps.carry.energy != creeps.carryCapacity && creep.pos.getRangeTo(creeps) < 5;
+            }
+        }));
+        return sources;
+    },
+    getMyWorkers: function(creep) {
+        var sources = creep.pos.findClosestByRange(creep.room.find(FIND_MY_CREEPS, {
+            filter: (creeps) => {
+                return (creeps.memory.role !== 'carrier') && (creeps.memory.role !== 'harvester') && creeps.carry.energy != creeps.carryCapacity && creep.pos.getRangeTo(creeps) < 2;
             }
         }));
         return sources;

@@ -11,6 +11,15 @@ var creepsMaster = {
               creepMethods.creepFindHome(creep);
             }
 
+            var shit = _.filter(Game.flags, {
+                    color: COLOR_GREY
+                });
+
+            if (_.size(shit)) {
+              if (creep.memory.role != 'fighter' && creep.memory.role != 'healer' )
+                  creep.moveTo(shit[0].pos);
+                      return;
+                }
             if (creep.memory.role == 'harvester') {
               //  creepMethods.creepMovement(creep);
                 creepMethods.harvest(creep);

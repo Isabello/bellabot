@@ -95,6 +95,8 @@ module.exports = function(options) {
                         var val = Memory.pathOptimizer[key];
                         if (val && ((val.used / (Game.time - val.tick) < 1 / 300) || Game.time - val.tick > 2000)) {
                             Memory.pathOptimizer[key] = undefined;
+                        } else if (val && ((val.used > 25))) {
+                            Memory.pathOptimizer[key] = undefined;
                         }
                     });
                     this._cleanedUp = true;
