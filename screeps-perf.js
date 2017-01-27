@@ -2,13 +2,12 @@ var originalFindPath = Room.prototype.findPath;
 var setup = false;
 
 function creepMemoryCleanUp() {
-    if (Game.time  >= Memory.screepsPerf.lastMemoryCleanUp + 100) {
+    if (Game.time - Memory.screepsPerf.lastMemoryCleanUp > 100) {
         Object.keys(Memory.creeps).forEach(creepName => {
             if (!Game.creeps[creepName]) {
                 Memory.creeps[creepName] = undefined;
             }
         });
-
         Object.keys(Game.flags).forEach(flag => {
             try {
                 if (Game.getObjectById(Memory.flags[flag].owner) == undefined && Memory.flags[flag].occupied == true) {

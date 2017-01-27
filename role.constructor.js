@@ -17,6 +17,20 @@ var roleConstructor = {
 
 
 /*
+var sites;
+for (var i in Game.rooms){
+  sites = Game.rooms[i].find(FIND_CONSTRUCTION_SITES);
+  console.log(sites);
+  if (sites[0] != (undefined || null)){
+    var findFlags = _.filter(Game.flags, {color: COLOR_GREEN});
+    for (var n in findFlags) {
+      findFlags[n].setPosition(new RoomPosition(sites[0].pos.x, sites[0].pos.y, sites[0].pos.roomName));
+    }
+    break;
+  }
+}
+*/
+/*
         if (spawn.memory.road_status == undefined) {
             var sources = spawn.room.find(FIND_SOURCES);
             for (var n in sources) {

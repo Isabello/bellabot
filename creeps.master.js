@@ -7,7 +7,7 @@ var creepsMaster = {
                 return;
             }
 
-            if (!creep.memory.home) {
+            if (!creep.memory.home && creep.memory.home == undefined) {
               creepMethods.creepFindHome(creep);
             }
 
@@ -39,6 +39,8 @@ var creepsMaster = {
             if (creep.memory.role == 'claimer') {
                 creepMethods.claim(creep);
             }
+
+
 
     }
 }
