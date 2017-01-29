@@ -37,17 +37,23 @@ var roleSpawner = {
             working: false
         }
         var reserve = spawnMethods.reservedEnergy(spawn, extensionCount);
-        if (Memory.activeCreeps.roles.carrier < Memory.activeCreeps.roles.harvester * 1.5) {
+        if (Memory.activeCreeps.roles.carrier < Memory.activeCreeps.roles.harvester * 1.2) {
             spawn.createCreep(spawnMethods.creepParts('carrier',reserve), undefined, carrier);
         } else if (Memory.activeCreeps.roles.harvester < _.size(_.filter(Game.flags, {
                 color: COLOR_BLUE
             }))) {
             spawn.createCreep(spawnMethods.creepParts('harvester',reserve), undefined, harvester);
-        } else if (Memory.activeCreeps.roles.worker < Memory.activeCreeps.roles.carrier / 1.5) {
+        } else if (Memory.activeCreeps.roles.worker < Memory.activeCreeps.roles.carrier / 3) {
             spawn.createCreep(spawnMethods.creepParts('worker',reserve), undefined, worker);
-        }
-        else if (Memory.activeCreeps.roles.repair < Memory.activeCreeps.roles.carrier / 5) {
+        } else if (Memory.activeCreeps.roles.repair < 1) {
             spawn.createCreep(spawnMethods.creepParts('repair',reserve), undefined, repair);
+        } else if (Memory.activeCreeps.roles.claimer < _.size(_.filter(Game.flags, {
+                color: COLOR_BROWN
+            }))) {
+            var newName = spawn.createCreep([MOVE, MOVE, CLAIM], undefined, {
+                role: 'claimer',
+                return: 'true'
+            });
         }
 
         /*

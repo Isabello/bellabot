@@ -170,28 +170,16 @@ var creepMethods = {
     },
 
     findEnergy: function(creep) {
-        var energy = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY, {
-            filter: function(energy) {
-                return energy.amount > 300
-            }
-        });
-        var maxRange = 100;
-        var structure = null;
-        var number = null;
-        if (energy == undefined) {
-            if (Memory.structures.energy.AVAILABLE.length > 0) {
+        if (Memory.structures.energy.AVAILABLE.length > 0) {
               if (Game.getObjectById(creep.memory.target) == undefined || Game.getObjectById(creep.memory.target).resourceType == undefined ){
                 creep.memory.target = undefined;
                 console.log(Memory.structures.energy.AVAILABLE);
               }
               if (creep.memory.target == undefined){
-                creep.memory.target = Memory.structures.energy.AVAILABLE[_.random(0, _.size(Memory.structures.energy.AVAILABLE))];
+                creep.memory.target = Memory.structures.energy.AVAILABLE[_.random(_.size(Memory.structures.energy.AVAILABLE))];
+                console.log(  creep.memory.target);
               }
-            }
-            return;
-        } else {
-            creep.memory.target = energy.id;
-        }
+            } 
     },
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -368,7 +356,7 @@ var creepMethods = {
     repairStructure: function(creep) {
         var roadToRepair = creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: function(object) {
-                return (object.structureType == STRUCTURE_ROAD || object.structureType == STRUCTURE_WALL) && (object.hits < object.hitsMax / 3);
+                return (object.structureType == STRUCTURE_ROAD) && (object.hits < object.hitsMax / 3);
             }
         });
         if (roadToRepair) {

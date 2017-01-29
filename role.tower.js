@@ -11,7 +11,7 @@ var roleTower = {
 
           if (tower.energy > 500){
             var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (structure) => structure.hits < structure.hitsMax / 10
+                filter: function(structure) { return structure.hits < structure.hitsMax / 10 && structure.structureType != STRUCTURE_WALL }
             });
             if (closestDamagedStructure) {
                 tower.repair(closestDamagedStructure);
