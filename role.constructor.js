@@ -30,27 +30,28 @@ for (var i in Game.rooms){
   }
 }
 */
-/*
-        if (spawn.memory.road_status == undefined) {
-            var sources = spawn.room.find(FIND_SOURCES);
-            for (var n in sources) {
-                var path_food = spawn.room.findPath(spawn.pos, sources[n].pos, {
+
+      if (Game.flags['road'] != undefined && Game.flags['road_target'] != undefined) {
+       var flag = Game.flags['road'];
+       var flag_target = Game.flags['road_target'];
+                var path_food = flag.room.findPath(flag.pos, flag_target.pos, {
                     ignoreCreeps: true
                 });
+                console.log(path_food);
                 for (var i in path_food) {
-                    if ((path_food[i].x == sources[n].pos.x) && (path_food[i].y == sources[n].pos.y)) {
+                    if ((path_food[i].x == flag_target.pos.x) && (path_food[i].y == flag_target.pos.y)) {
                         break;
                     } else {
-                        Game.rooms.sim.createFlag(path_food[i].x, path_food[i].y, 'road_' + n + '_' + i, COLOR_GREY);
-                        var pos = new RoomPosition(path_food[i].x, path_food[i].y, spawn.room.name);
+                      //  Game.rooms[spawn.pos.roomName].createFlag(path_food[i].x, path_food[i].y, 'road_' + n + '_' + i, COLOR_GREY);
+                        var pos = new RoomPosition(path_food[i].x, path_food[i].y, flag_target.pos.roomName);
                         pos.createConstructionSite(STRUCTURE_ROAD);
                     }
                 }
-            }
-            spawn.memory.road_status = 'complete';
+            Game.flags['road_target'].remove();
+            console.log('building road');
         }
-*/
 
+/*
         if (spawn.room.controller.level == 2 && spawn.memory.extensionCount < 5) {
 
             var extensionCount = spawn.room.find(FIND_MY_STRUCTURES, {
@@ -72,6 +73,7 @@ for (var i in Game.rooms){
             }
 
         }
+*/
     }
 };
 

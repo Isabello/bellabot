@@ -1,4 +1,4 @@
-var creepMethods = require('creep.methods');
+var creepMethods = require('new.creep.methods');
 var creepsMaster = {
 
     run: function(creep) {
@@ -6,50 +6,33 @@ var creepsMaster = {
             if (creep.spawning == true) {
                 return;
             }
-
-            if (!creep.memory.home && creep.memory.home == undefined) {
-              creepMethods.creepFindHome(creep);
+            if (creep.memory.home == false) {
+              creepMethods.findEmpty(creep);
             }
 
-            var shit = _.filter(Game.flags, {
-                    color: COLOR_GREY
-                });
+                   if (creep.memory.role == 'harvester') {
+                     //  creepMethods.creepMovement(creep);
+                       creepMethods.harvest(creep);
+                   }
 
-            if (_.size(shit)) {
-              if (creep.memory.role != 'fighter' && creep.memory.role != 'healer' )
-                  creep.moveTo(shit[0].pos);
-                      return;
-                }
-            if (creep.memory.role == 'harvester') {
-              //  creepMethods.creepMovement(creep);
-                creepMethods.harvest(creep);
-            }
+                   if (creep.memory.role == 'carrier') {
+                       creepMethods.carry(creep);
+                   }
+                   if (creep.memory.role == 'worker') {
+                       creepMethods.worker(creep);
+                   }
 
-            if (creep.memory.role == 'upgrader') {
-                creepMethods.upgrade(creep);
-            }
+                   if (creep.memory.role == 'fighter') {
+                       creepMethods.fighter(creep);
+                   }
 
-            if (creep.memory.role == 'builder') {
-                creepMethods.build(creep);
-            }
+                   if (creep.memory.role == 'healer') {
+                       creepMethods.healer(creep);
+                   }
 
-            if (creep.memory.role == 'carrier') {
-                creepMethods.carry(creep);
-            }
-
-            if (creep.memory.role == 'fighter') {
-                creepMethods.fighter(creep);
-            }
-
-            if (creep.memory.role == 'healer') {
-                creepMethods.healer(creep);
-            }
-
-            if (creep.memory.role == 'claimer') {
-                creepMethods.claim(creep);
-            }
-
-
+                   if (creep.memory.role == 'claimer') {
+                       creepMethods.claim(creep);
+                   }
 
     }
 }
