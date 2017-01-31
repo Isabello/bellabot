@@ -13,27 +13,28 @@ const profiler = require('screeps-profiler');
 profiler.enable();
 module.exports.loop = function() {
     profiler.wrap(function() {
-        var tower = Game.getObjectById('faaf2b5ff0294f7');
+        var tower = Game.getObjectById('cf6ca2baaf8817f');
         roleTower.run(tower);
 
         var activeCreeps = {
             'roles': {
-                harvester: 0,
-                carrier: 0,
-                worker: 0,
-                repair: 0,
-                fighter: 0,
-                ranger: 0,
-                healer: 0,
-                claimer: 0,
-                filler: 0
+              harvester: 0,
+              carrier: 0,
+              tiny_carrier: 0,
+              worker: 0,
+              repair: 0,
+              upgrader: 0,
+              fighter: 0,
+              ranger: 0,
+              healer: 0,
+              claimer: 0,
             }
         };
                 Memory.activeCreeps = activeCreeps;
         var targeter = memoryTransport.initTargeter();
         var structures = memoryTransport.initStructures();
         var energy = memoryTransport.checkFreeEnergy(Memory.structures);
-      //  console.log(JSON.stringify(Memory.structures));
+        console.log(JSON.stringify(Memory.structures));
 
         var role;
         for (var name in Game.creeps) {

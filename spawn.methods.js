@@ -38,28 +38,50 @@ var spawnMethods = {
 
     creepParts: function(type, reserve) {
         if (type == 'harvester') {
-          var slice = reserve / 75;
-          var parts = [WORK, CARRY, MOVE, WORK, CARRY, MOVE,WORK, CARRY, MOVE,WORK, CARRY, MOVE, MOVE,MOVE];
+          var slice = reserve / 50;
+          var parts = [WORK,MOVE,MOVE, WORK, MOVE, MOVE, WORK, CARRY, MOVE, MOVE, WORK];
           parts = parts.splice(-slice);
         }
 
         if (type == 'carrier') {
-        var slice = reserve / 50;
-            var parts = [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, MOVE, MOVE, MOVE, CARRY, MOVE, CARRY, MOVE];
+        var slice = reserve / 50 - 50;
+            var parts = [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE,CARRY, MOVE, CARRY,  MOVE, CARRY, MOVE];
             parts = parts.splice(-slice);
-        }
-        if (type == 'carrier_tiny') {
-            var parts = [CARRY, MOVE];
         }
         if (type == 'worker') {
           var slice = reserve / 75;
-            var parts = [MOVE, CARRY, WORK, WORK, CARRY, MOVE,MOVE, CARRY, WORK, MOVE, CARRY, WORK, MOVE, CARRY, WORK, MOVE, CARRY, WORK];
+            var parts = [MOVE, MOVE, CARRY, WORK, MOVE, MOVE, CARRY, WORK, MOVE, MOVE, CARRY, WORK, MOVE, MOVE, CARRY, WORK, MOVE, MOVE, CARRY];
             parts = parts.splice(-slice);
         }
         if (type == 'repair') {
           var slice = reserve / 75;
             var parts = [MOVE, CARRY, WORK, MOVE, CARRY, WORK, MOVE, CARRY, WORK, MOVE, CARRY, WORK, MOVE, CARRY, WORK, MOVE, CARRY, WORK];
             parts = parts.splice(-slice);
+        }
+        if (type == 'fighter') {
+          var slice = reserve / 25;
+            var parts = [TOUGH, TOUGH, TOUGH, TOUGH, MOVE, ATTACK, MOVE, ATTACK, MOVE, MOVE, MOVE];
+            parts = parts.splice(-slice);
+        }
+        if (type == 'healer') {
+          var slice = reserve / 150;
+            var parts = [HEAL, MOVE, HEAL, MOVE, MOVE, MOVE, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE];
+            parts = parts.splice(-slice);
+            console.log(parts);
+        }
+        if (type == 'ranger') {
+          var slice = reserve / 100;
+            var parts = [TOUGH, MOVE, RANGED_ATTACK, MOVE, TOUGH, MOVE, RANGED_ATTACK, MOVE, RANGED_ATTACK];
+            parts = parts.splice(-slice);
+        }
+        if (type == 'upgrader') {
+          var slice = reserve / 75;
+            var parts = [MOVE, MOVE, CARRY, WORK, MOVE, MOVE, CARRY, WORK, MOVE, MOVE, CARRY, WORK, MOVE, MOVE, CARRY, WORK, MOVE, MOVE, CARRY];
+            parts = parts.splice(-slice);
+        }
+        if (type == 'tiny_carrier') {
+            var parts = [CARRY, MOVE, CARRY, MOVE];
+            parts = parts;
         }
         return parts;
 /*
@@ -77,7 +99,7 @@ var spawnMethods = {
 */
     },
     reservedEnergy: function(spawn, extensionCount){
-      var reserve = Game.rooms[spawn.pos.roomName].energyCapacityAvailable - ((extensionCount / 3) * 50);
+      var reserve = Game.rooms[spawn.pos.roomName].energyCapacityAvailable - ((extensionCount / 2) * 50);
       console.log(reserve);
       return reserve;
     }

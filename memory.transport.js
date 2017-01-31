@@ -11,7 +11,8 @@ var memoryTransport = {
         for (var i in Game.rooms) {
             var findStructures = Game.rooms[i].find(FIND_STRUCTURES, {
                 filter: function(object) {
-                    return object.structureType != STRUCTURE_ROAD && object.structureType != STRUCTURE_CONTROLLER
+                    return object.structureType != STRUCTURE_ROAD && object.structureType != STRUCTURE_CONTROLLER &&
+                     object.structureType != STRUCTURE_WALL && object.structureType != STRUCTURE_RAMPART
                 }
             });
 
@@ -52,20 +53,16 @@ var memoryTransport = {
                         }
                         continue;
                       }
-                    } else if (findStructures[structure].store[RESOURCE_ENERGY] >= 1500) {
-                        switch (findStructures[structure].structureType) {
-                          case STRUCTURE_STORAGE:
-                              structures.full.STRUCTURE_STORAGE.push(findStructures[structure].id);
-                              break;
-                          case STRUCTURE_CONTAINER:
+                    } else if (findStructures[structure].store[RESOURCE_ENERGY] >= 1500 && findStructures[structure].structureType == STRUCTURE_CONTAINER) {
                               structures.full.STRUCTURE_CONTAINER.push(findStructures[structure].id);
-                              break;
 
-                        }
                       continue;
+                    } else if (findStructures[structure].store[RESOURCE_ENERGY] >= 150000 && findStructures[structure].structureType == STRUCTURE_STORAGE) {
+                              structures.full.STRUCTURE_STORAGE.push(findStructures[structure].id);
+                              continue;
                     }
                 } catch (e) {
-          
+                  console.log(e + findStructures[structure]);
 
                 }
 

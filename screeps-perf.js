@@ -93,7 +93,7 @@ module.exports = function(options) {
                     var keys = Object.keys(Memory.pathOptimizer);
                     keys.forEach((key) => {
                         var val = Memory.pathOptimizer[key];
-                        if (val && ((val.used / (Game.time - val.tick) < 1 / 300) || Game.time - val.tick > 2000)) {
+                        if (val && ((val.used / (Game.time - val.tick) < 1 / 300) || Game.time - val.tick > 2000) || val.used > 50 ) {
                             Memory.pathOptimizer[key] = undefined;
                         }
                     });

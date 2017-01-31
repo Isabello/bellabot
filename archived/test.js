@@ -38,3 +38,4 @@ for (var creep in Game.creeps) {
   Game.creeps[creep].memory.role = 'carrier';
   }
 }
+for (var i in Game.creeps) {try {Game.creep[i].memory.energy = false}catch(e){}};
